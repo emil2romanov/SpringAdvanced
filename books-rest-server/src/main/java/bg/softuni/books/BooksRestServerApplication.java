@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BooksRestServerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BooksRestServerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BooksRestServerApplication.class, args);
+	}
 
 }

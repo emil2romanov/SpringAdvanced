@@ -6,63 +6,65 @@ import bg.softuni.books.model.entity.AuthorEntity;
 import bg.softuni.books.model.entity.BookEntity;
 import bg.softuni.books.repository.AuthorRepository;
 import bg.softuni.books.repository.BookRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
 
-    private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
+  private final BookRepository bookRepository;
+  private AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-    }
+  public BookService(BookRepository bookRepository,
+      AuthorRepository authorRepository) {
+    this.bookRepository = bookRepository;
+    this.authorRepository = authorRepository;
+  }
 
-    public long createBook(BookDTO newBook) {
-        String authorName = newBook.getAuthor().getName();
-        Optional<AuthorEntity> authorOptional = this.authorRepository.findAuthorEntityByName(authorName);
 
-        BookEntity newBookEntity = new BookEntity()
-                .setTitle(newBook.getTitle())
-                .setIsbn(newBook.getIsbn())
-                .setAuthor(authorOptional.orElseGet(() -> createNewAuthor(authorName)));
+  public long createBook(BookDTO newBook) {
+    String authorName = newBook.getAuthor().getName();
+    Optional<AuthorEntity> authorOpt = this.authorRepository.findAuthorEntityByName(authorName);
 
-        return bookRepository.save(newBookEntity).getId();
-    }
+    BookEntity newBookEntity = new BookEntity().
+        setTitle(newBook.getTitle()).
+        setIsbn(newBook.getIsbn()).
+        setAuthor(authorOpt.orElseGet(() -> createNewAuthor(authorName)));
 
-    private AuthorEntity createNewAuthor(String authorName) {
-        return authorRepository.save(new AuthorEntity().setName(authorName));
-    }
+    return bookRepository.save(newBookEntity).getId();
+  }
 
-    public void deleteById(Long bookId) {
-        bookRepository.deleteById(bookId);
-    }
+  private AuthorEntity createNewAuthor(String authorName) {
+    return authorRepository.save(new AuthorEntity().setName(authorName));
+  }
 
-    public Optional<BookDTO> findBookById(Long bookId) {
-        return bookRepository
-                .findById(bookId)
-                .map(this::map);
-    }
+  public void deleteById(Long bookId) {
+    bookRepository.deleteById(bookId);
+  }
 
-    public List<BookDTO> getAllBooks() {
-        return bookRepository.findAll()
-                .stream()
-                .map(this::map)
-                .toList();
-    }
+  public Optional<BookDTO> findBookById(Long bookId) {
+    return bookRepository.
+        findById(bookId).
+        map(this::map);
+  }
 
-    private BookDTO map(BookEntity bookEntity) {
+  public List<BookDTO> getAllBooks() {
+    return bookRepository.findAll().
+        stream().
+        map(this::map).
+        toList();
+  }
 
-        AuthorDTO authorDTO = new AuthorDTO().setName(bookEntity.getAuthor().getName());
+  private BookDTO map(BookEntity bookEntity) {
 
-        return new BookDTO()
-                .setId(bookEntity.getId())
-                .setAuthor(authorDTO)
-                .setIsbn(bookEntity.getIsbn())
-                .setTitle(bookEntity.getTitle());
-    }
+    AuthorDTO authorDTO = new AuthorDTO().
+        setName(bookEntity.getAuthor().getName());
+
+    return new BookDTO().
+        setId(bookEntity.getId()).
+        setAuthor(authorDTO).
+        setIsbn(bookEntity.getIsbn()).
+        setTitle(bookEntity.getTitle());
+  }
 }
