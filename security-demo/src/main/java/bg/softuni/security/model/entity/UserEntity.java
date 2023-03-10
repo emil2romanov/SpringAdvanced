@@ -21,9 +21,14 @@ public class UserEntity {
 
   @Column(nullable = false)
   private String email;
+
   @Column(nullable = false)
   private String firstName;
+
+  private String country;
+
   private String lastName;
+
   @Column(nullable = false)
   private String password;
 
@@ -89,6 +94,15 @@ public class UserEntity {
     return this;
   }
 
+  public String getCountry() {
+    return country;
+  }
+
+  public UserEntity setCountry(String country) {
+    this.country = country;
+    return this;
+  }
+
   @Override
   public String toString() {
     return "UserEntity{" +
@@ -96,7 +110,8 @@ public class UserEntity {
         ", email='" + email + '\'' +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
-        ", password='" + password + '\'' +
+        ", country='" + country + '\'' +
+        ", password='" + (password != null ? "[PROVIDED]" : "[N/A]") + '\'' +
         ", roles=" + roles +
         '}';
   }

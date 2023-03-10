@@ -1,5 +1,6 @@
 package bg.softuni.security.service;
 
+import bg.softuni.security.model.AppUserDetails;
 import bg.softuni.security.model.entity.UserEntity;
 import bg.softuni.security.model.entity.UserRoleEntity;
 import bg.softuni.security.repository.UserRepository;
@@ -28,12 +29,13 @@ public class ApplicationUserDetailsService implements UserDetailsService {
             orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found!"));
   }
 
-  private UserDetails map(UserEntity userEntity) {
-    return new User(
+  private AppUserDetails map(UserEntity userEntity) {
+    return new AppUserDetails(
         userEntity.getEmail(),
         userEntity.getPassword(),
         extractAuthorities(userEntity)
-    );
+    ).setCountry(userEntity.getCountry()).
+            setFullName(userEntity.getFirstName() + " " + userEntity.getLastName());
   }
 
   private List<GrantedAuthority> extractAuthorities(UserEntity userEntity) {
