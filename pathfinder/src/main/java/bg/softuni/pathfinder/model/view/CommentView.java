@@ -5,12 +5,22 @@ public class CommentView {
     private String text;
     private String authorName;
     private String dateOfCreation;
+    private boolean canEdit;
 
-    public CommentView(Long id, String text, String authorName, String dateOfCreation) {
+    public CommentView(Long id, String text, String authorName, String dateOfCreation, boolean canEdit) {
         this.id = id;
         this.text = text;
         this.authorName = authorName;
         this.dateOfCreation = dateOfCreation;
+        this.canEdit = canEdit;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
     }
 
     public String getText() {

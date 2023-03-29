@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class RouteService {
+    
     private RouteRepository routeRepository;
     private ImageCloudService imageCloudService;
 
@@ -25,6 +26,7 @@ public class RouteService {
     public List<Route> getMostCommented() {
         return routeRepository.findMostCommented();
     }
+
     public List<Route> getAllRoutes() {
         return routeRepository.findAll();
     }
